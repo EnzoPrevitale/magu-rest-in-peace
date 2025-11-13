@@ -24,5 +24,23 @@ class Handler(SimpleHTTPRequestHandler):
             return json.loads(body)
         except json.JSONDecodeError:
             return None
-        
     
+    def parse_headers(self):
+        auth_header = self.headers.get("Authorization")
+        if auth_header and auth_header.startswith("Bearer "):
+            return auth_header.split(" ")[1]
+        return None
+    
+    def parse_path(self, url):
+        split = urlsplit(url)
+        path_parts = split.path.strip("/").split("/")
+        result = {"path": "/" + "/".join(path_parts)}
+
+        if path_parts and path_parts[-1].isdigit():
+            result["id"] = int(path_parts[-1])
+        else:
+            result["id"] = False
+
+        result["query"] = unquote(split.query.strip().lower())
+
+        return result

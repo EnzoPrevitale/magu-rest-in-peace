@@ -1,18 +1,26 @@
-from models.model import Model, table
-from core.auth.auth import Authentication
+from core import server
+from controllers.controller import Controller, request_mapping
 
-@table(table_name="user", user=True)
-class User(Model):
-    def __init__(self, name: str, password: str):
+@request_mapping("/a")
+class TestController(Controller):
+    def __init__(self):
         super().__init__()
-        '''
 
-        Lógica para puxar id do banco
+    @Controller.get_mapping("/a")
+    def get():
+        print("cu")
 
-        '''
-        self.name: str = name
-        self.password: str = password
+@request_mapping("/b")
+class AController(Controller):
+    def __init__(self):
+        super().__init__()
 
-user = User("Enzo", "eadaasd")
+    @Controller.get_mapping("/b")
+    def get():
+        print("buceta")
 
-print(Authentication.get_token(user))
+cont = TestController()
+cont2 = AController()
+
+if __name__ == '__main__':
+    server.run_server()
