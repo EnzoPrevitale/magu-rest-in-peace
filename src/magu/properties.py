@@ -1,7 +1,9 @@
 # Database
 DATABASE_HOST="localhost"
-DATABASE_USER="root"
-DATABASE_PASSWORD="root"
+DATABASE_USER="magu"
+DATABASE_PASSWORD="magu"
+DATABASE_PORT=3306
+DATABASE_NAME="magu"
 
 # Server
 SERVER_HOST="localhost"

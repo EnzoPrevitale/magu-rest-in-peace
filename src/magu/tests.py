@@ -1,7 +1,7 @@
 from magu.core.server import run_server
 from magu.controllers.controller import *
 from magu.models.model import *
-from magu.repositories.repository import MySQLRepository
+from magu.repositories.repository import MariaDBRepository
 
 @table(name="tabela")
 class RestModel(Model):
@@ -9,7 +9,7 @@ class RestModel(Model):
         super().__init__()
 
     id = Column(int, id=True)
-    name = Column(int)
+    name = Column(str)
     age = Column(int)
 
 @request_mapping("/")
@@ -26,19 +26,31 @@ class RootController(Controller):
 class RestController(Controller):
     def __init__(self):
         super().__init__()
-        self.rep = MySQLRepository(RestModel())
+        self.rep = MariaDBRepository(RestModel)
 
     @get_mapping()
     def get(self):
-        mod = RestModel()
-        mod.name = "nome"
-        mod.age = 1
-        self.rep.save()
-        return mod()
+        return self.rep.find_all()
     
     @get_mapping("/a")
     def get1(self):
         return {"get": 1}
+
+    @post_mapping()
+    def post(self):
+        mod = RestModel()
+        mod.name = "delicia"
+        mod.age = 1
+        return self.rep.save(mod)
+
+    @get_mapping("/{id}")
+    def get_one(self):
+        return self.rep.find_by_id(self.pk)
+
+    @get_mapping("/a/{id}")
+    def get_a(self):
+        return self.rep.find_by_id(id)
+
     
 cont = RestController()
 root = RootController()
