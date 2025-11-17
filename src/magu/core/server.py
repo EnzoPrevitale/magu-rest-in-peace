@@ -12,11 +12,11 @@ class ServerHandler(Handler):
     
     def do_POST(self):
         length = int(self.headers.get("Content-Length", 0))
-        body = self.rfile.read(length)
-        data = json.loads(body)
-        print(data)
+        if length:
+            body = self.rfile.read(length)
+            data = json.loads(body)
 
-        self.router.route(self,'POST')
+        self.router.route(self, 'POST', data=data)
 
     def do_PUT(self):
         length = int(self.headers.get("Content-Length", 0))
@@ -28,12 +28,11 @@ class ServerHandler(Handler):
     
     def do_PATCH(self):
         length = int(self.headers.get("Content-Length", 0))
-        
-        body = self.rfile.read(length)
-        data = json.loads(body)
-        print(data)
+        if length:
+            body = self.rfile.read(length)
+            data = json.loads(body)
 
-        self.router.route(self,'PATCH')
+        self.router.route(self,'PATCH', data=data)
 
     def do_DELETE(self):
         self.router.route(self,'DELETE')

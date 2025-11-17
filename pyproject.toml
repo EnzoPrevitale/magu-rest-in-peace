@@ -1,6 +1,6 @@
 [project]
-name = "magu-rest-in-peace"
-version = "0.0.2"
+name = "magu-rip"
+version = "0.0.3"
 description = "Simple Web Framework."
 dependencies = [
     "cffi",

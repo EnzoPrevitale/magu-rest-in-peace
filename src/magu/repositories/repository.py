@@ -1,5 +1,5 @@
-#from magu.database.database import MySQLDatabase as mysql
-from magu.database.database import MariaDBDatabase as mariadb
+from magu.database.database import MySQLDatabase as mysql
+#from magu.database.database import MariaDBDatabase as mariadb
 from magu.models.model import Model
 from magu.models.model import Column
 

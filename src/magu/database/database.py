@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 from contextlib import contextmanager
-import mariadb
+#import mariadb
 from magu import properties
 
 class MySQLDatabase:
@@ -16,7 +16,7 @@ class MySQLDatabase:
                 database=properties.DATABASE_NAME,
             )
             print(f"[DB] Connected with user {properties.DATABASE_USER} on host {properties.DATABASE_HOST}")
-            conn.cursor().execute("USE %s;", (properties.DATABASE_NAME))
+            conn.cursor().execute(f"USE {properties.DATABASE_NAME};")
             return conn
         except Error as e:
             print(f"[DB] ERROR: Couldn't connect to user {properties.DATABASE_USER} on host {properties.DATABASE_HOST}")

@@ -2,6 +2,7 @@ from magu.core.server import run_server
 from magu.controllers.controller import *
 from magu.models.model import *
 from magu.repositories.repository import MariaDBRepository
+from magu.database.database import MySQLDatabase as mysql
 
 @table(name="tabela")
 class RestModel(Model):
@@ -26,15 +27,10 @@ class RootController(Controller):
 class RestController(Controller):
     def __init__(self):
         super().__init__()
-        self.rep = MariaDBRepository(RestModel)
 
     @get_mapping()
     def get(self):
         return self.rep.find_all()
-    
-    @get_mapping("/a")
-    def get1(self):
-        return {"get": 1}
 
     @post_mapping()
     def post(self):
