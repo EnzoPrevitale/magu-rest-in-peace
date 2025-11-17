@@ -45,7 +45,7 @@ class MariaDBRepository:
     def find_by_id(self, id):
         with mariadb.session() as session:
             session.execute(f"SELECT * FROM `{self.table}` WHERE `{self.id}` = {id}")
-            return dict(zip(self.columns, session.fetchone()))
+            return dict(zip(self.columns_id, session.fetchone()))
         
 
     def save(self, entity: Model):
@@ -64,3 +64,33 @@ class MariaDBRepository:
             session.execute(fetch, (last_id,))
             res = dict(zip(self.columns_id, session.fetchone()))
             return res
+
+    def update(self, id, new_model):
+        # pega apenas colunas definidas no model (exceto o id)
+        columns = [
+            name for name, attr in self.model.__dict__.items()
+            if isinstance(attr, Column) and not attr.id
+        ]
+
+        # pega os novos valores que o usuário enviou
+        values = [getattr(new_model, col) for col in columns]
+
+        # gera: "name = %s, age = %s, ..."
+        set_clause = ", ".join(f"`{col}` = %s" for col in columns)
+
+        query = f"""
+            UPDATE `{self.table}`
+            SET {set_clause}
+            WHERE `{self.id}` = %s
+        """
+
+        with mariadb.session() as session:
+            session.execute(query, (*values, id))  # executa UPDATE
+
+            # busca o registro atualizado
+            session.execute(
+                f"SELECT * FROM `{self.table}` WHERE `{self.id}` = %s",
+                (id,)
+            )
+
+            return dict(zip(self.columns_id, session.fetchone()))

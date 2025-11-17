@@ -47,28 +47,44 @@ def get_mapping(uri: str = "/"):
 def post_mapping(uri: str = "/"):
     def wrapper(func):
         func._http_method = 'POST'
-        func._method_uri = uri
+
+        pattern = r"({(.*?)})"
+        uri_initial = re.sub(pattern, "{ID_PLACEHOLDER}", uri)
+        func._method_uri = uri_initial
+
         return func
     return wrapper
     
 def put_mapping(uri: str = "/"):
     def wrapper(func):
         func._http_method = 'PUT'
-        func._method_uri = uri
+
+        pattern = r"({(.*?)})"
+        uri_initial = re.sub(pattern, "{ID_PLACEHOLDER}", uri)
+        func._method_uri = uri_initial
+        
         return func
     return wrapper
     
 def patch_mapping(uri: str = "/"):
     def wrapper(func):
         func._http_method = 'PATCH'
-        func._method_uri = uri
+
+        pattern = r"({(.*?)})"
+        uri_initial = re.sub(pattern, "{ID_PLACEHOLDER}", uri)
+        func._method_uri = uri_initial
+
         return func
     return wrapper
     
 def delete_mapping(uri: str = "/"):
     def wrapper(func):
         func._http_method = 'DELETE'
-        func._method_uri = uri
+
+        pattern = r"({(.*?)})"
+        uri_initial = re.sub(pattern, "{ID_PLACEHOLDER}", uri)
+        func._method_uri = uri_initial
+        
         return func
     return wrapper
 

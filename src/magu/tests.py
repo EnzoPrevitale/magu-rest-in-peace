@@ -51,6 +51,12 @@ class RestController(Controller):
     def get_a(self):
         return self.rep.find_by_id(id)
 
+    @put_mapping("/{id}")
+    def patch(self):
+        mod = RestModel()
+        mod.name = "Enzo"
+        mod.age = 17
+        return self.rep.update(self.pk, mod)
     
 cont = RestController()
 root = RootController()

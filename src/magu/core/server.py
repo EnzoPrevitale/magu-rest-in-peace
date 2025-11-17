@@ -2,6 +2,7 @@ from http.server import HTTPServer
 from magu.services.handler import Handler
 from magu.core.router import Router
 import magu.properties as properties
+import json
 
 class ServerHandler(Handler):
     router = Router()
@@ -10,12 +11,28 @@ class ServerHandler(Handler):
         self.router.route(self, 'GET')
     
     def do_POST(self):
+        length = int(self.headers.get("Content-Length", 0))
+        body = self.rfile.read(length)
+        data = json.loads(body)
+        print(data)
+
         self.router.route(self,'POST')
 
     def do_PUT(self):
-        self.router.route(self,'PUT')
+        length = int(self.headers.get("Content-Length", 0))
+        if length:
+            body = self.rfile.read(length)
+            data = json.loads(body)
+
+        self.router.route(self, 'PUT', data=data)
     
     def do_PATCH(self):
+        length = int(self.headers.get("Content-Length", 0))
+        
+        body = self.rfile.read(length)
+        data = json.loads(body)
+        print(data)
+
         self.router.route(self,'PATCH')
 
     def do_DELETE(self):

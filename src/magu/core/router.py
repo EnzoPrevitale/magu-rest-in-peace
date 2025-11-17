@@ -34,7 +34,7 @@ def get_methods(uri: str, method: str, id: str = None):
 
 
 class Router:
-    def route(self, handler: Handler, http_method: str):
+    def route(self, handler: Handler, http_method: str, data: dict = {}):
         server_path = handler.path
         parse_path = handler.parse_path(server_path)
         
@@ -48,6 +48,7 @@ class Router:
 
         for func, cont in gets:
             cont.pk = pk
+            cont.data = data
             instance = cont()
             handler.send_json(func(instance))
             break
